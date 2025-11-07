@@ -1,0 +1,5 @@
+{
+  "name": "Referral Dashboard",
+  "description": "A user dashboard to track daily tasks, referrals, and earnings, with options to copy and share a referral link.",
+  "requestFramePermissions": []
+}

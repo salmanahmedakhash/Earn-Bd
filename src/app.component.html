@@ -1,0 +1,184 @@
+<div class="bg-slate-900 text-white min-h-screen font-sans">
+  <main class="p-4 pb-28">
+    <!-- Profile Header -->
+    <header class="flex items-center space-x-4">
+      <img [ngSrc]="user().avatarUrl" alt="User Avatar" width="64" height="64" class="rounded-full border-2 border-slate-700">
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <h1 class="text-xl font-bold">{{ user().name }}</h1>
+          @if (user().isVerified) {
+            <svg class="w-5 h-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          }
+        </div>
+        <p class="text-slate-400 text-sm flex items-center space-x-1">
+          <span>ব্যালেন্স: {{ user().balance }} {{ user().currency }}</span>
+          <span>{{ user().currencySymbol }}</span>
+        </p>
+      </div>
+    </header>
+
+    @switch (activeNav()) {
+      @case ('Home') {
+        <!-- Dashboard Section -->
+        <section class="mt-8">
+          <h2 class="text-2xl font-bold text-slate-200 mb-4">Dashboard</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-slate-800 rounded-lg p-4 flex flex-col items-center justify-center shadow-lg">
+              <p class="text-slate-400 text-sm">Daily Ads Watched</p>
+              <p class="text-3xl font-bold text-blue-400 mt-2">{{ stats().adsWatched }} / {{ stats().adsTotal }}</p>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-4 flex flex-col items-center justify-center shadow-lg">
+              <p class="text-slate-400 text-sm">Total Referrals</p>
+              <p class="text-3xl font-bold text-blue-400 mt-2">{{ stats().totalReferrals }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Refer & Earn Section -->
+        <section class="mt-8 bg-slate-800 rounded-lg p-6 shadow-lg">
+          <div class="text-center">
+            <h3 class="text-xl font-bold text-slate-100">Refer & Earn More!</h3>
+            <p class="text-slate-400 mt-2 text-sm leading-relaxed">
+              রেফার বোনাস পেতে লিঙ্কটি কপি করে আপনার বন্ধুদের কাছে শেয়ার করুন। প্রতি রেফারে আয় ৪০ টাকা।
+            </p>
+            <div class="bg-slate-900 border-2 border-dashed border-blue-500/50 rounded-lg p-3 my-5 text-left text-sm text-slate-300 truncate">
+              {{ referralLink() }}
+            </div>
+            <div class="flex flex-col space-y-3 mt-4">
+              <button (click)="copyReferralLink()" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                @if (copyStatus() === 'copied') {
+                  <span>Copied!</span>
+                } @else {
+                  <span>Copy Referral Link</span>
+                }
+              </button>
+              <button (click)="shareNow()" class="w-full bg-green-500 text-white font-semibold py-3 rounded-lg hover:bg-green-600 transition-colors duration-200 flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.002l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path></svg>
+                <span>Share Now</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      }
+      @case ('Support') {
+        <section class="mt-8">
+          <h2 class="text-2xl font-bold text-slate-200 mb-4">Support</h2>
+          <div class="bg-slate-800 rounded-lg p-8 shadow-lg flex flex-col items-center text-center">
+            <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mb-5">
+              <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-100">Tutorial Video</h3>
+            <p class="text-slate-400 mt-2 leading-relaxed">
+              কিভাবে অ্যাপটি ব্যবহার করবেন—টিউটোরিয়াল দেখে নিন।
+            </p>
+            <button class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 mt-6">
+              Open Tutorial
+            </button>
+            <p class="text-slate-400 text-sm mt-4 flex items-center space-x-2">
+              <span>🎞️</span>
+              <span>ভিডিও দেখে সব কিছু বুঝে নিন</span>
+            </p>
+          </div>
+        </section>
+      }
+      @case ('Tasks') {
+        <section class="mt-8">
+          <h2 class="text-2xl font-bold text-slate-200 mb-4">Complete Tasks</h2>
+          <div class="space-y-4">
+            <!-- Rewarded Ad Card -->
+            <div class="bg-slate-800 rounded-lg p-6 shadow-lg flex flex-col items-center text-center">
+              <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              </div>
+              <h3 class="text-xl font-bold text-slate-100">Rewarded Ad</h3>
+              <p class="text-slate-400 mt-2 text-sm">প্রতিটি বিজ্ঞাপনের জন্য ৫ টাকা আয় করুন।</p>
+              <button class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 mt-5">
+                Watch Ad
+              </button>
+              <p class="text-slate-500 text-xs mt-3">পুরস্কার পেতে ১৫ সেকেন্ডের জন্য বিজ্ঞাপনে থাকুন।</p>
+            </div>
+            
+            <!-- Telegram Channel Card -->
+            <div class="bg-slate-800 rounded-lg p-6 shadow-lg flex flex-col items-center text-center">
+              <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                 <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.57c-.28 1.1-.86 1.32-1.7.82l-4.7-3.41-2.27 2.21c-.25.26-.48.49-.95.49z"></path></svg>
+              </div>
+              <h3 class="text-xl font-bold text-slate-100">Join our Telegram Channel</h3>
+              <p class="text-slate-400 mt-2 text-sm leading-relaxed">চ্যানেলে জয়েন করুন, তারপর ফিরে এসে "Check & Claim" দিন।</p>
+              <div class="flex space-x-3 mt-5 w-full">
+                <button class="flex-1 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Open Channel</button>
+                <button class="flex-1 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Check & Claim</button>
+              </div>
+              <p class="text-slate-500 text-xs mt-3">চ্যানেলে জয়েন করলে ১০ টাকা পাবেন।</p>
+            </div>
+
+            <!-- YouTube Subscribe Card -->
+            <div class="bg-slate-800 rounded-lg p-6 shadow-lg flex flex-col items-center text-center">
+              <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                 <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path></svg>
+              </div>
+              <h3 class="text-xl font-bold text-slate-100">Subscribe our YouTube</h3>
+              <p class="text-slate-400 mt-2 text-sm leading-relaxed">Open YouTube এ ক্লিক করুন, সাবস্ক্রাইব করুন, তারপর "Check & Claim" দিন।</p>
+              <div class="flex space-x-3 mt-5 w-full">
+                <button class="flex-1 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Open YouTube</button>
+                <button class="flex-1 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Check & Claim</button>
+              </div>
+               <p class="text-slate-500 text-xs mt-3">YouTube সাবস্ক্রাইব করলে ১৫ টাকা পাবেন।</p>
+            </div>
+          </div>
+        </section>
+      }
+      @case ('Withdraw') {
+        <section class="mt-8">
+          <h2 class="text-2xl font-bold text-slate-200 mb-4">Withdraw (টাকা)</h2>
+          <div class="bg-slate-800 rounded-lg p-6 shadow-lg">
+            <p class="text-slate-300 text-sm mb-6">
+              ন্যূনতম 1000 টাকা এবং কমপক্ষে 20 টি রেফারেল প্রয়োজন।
+            </p>
+            <form class="space-y-5" (submit)="$event.preventDefault()">
+              <div>
+                <label for="method" class="block text-sm font-medium text-slate-400 mb-2">Method:</label>
+                <input type="text" id="method" value="Bkash" readonly class="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 text-slate-300 cursor-not-allowed focus:outline-none">
+              </div>
+              <div>
+                <label for="accountNumber" class="block text-sm font-medium text-slate-400 mb-2">Account Number:</label>
+                <input type="text" id="accountNumber" placeholder="01XXXXXXXXXX" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label for="amount" class="block text-sm font-medium text-slate-400 mb-2">Amount (টাকা):</label>
+                <input type="number" id="amount" value="1500" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 !mt-8">
+                Submit Request
+              </button>
+            </form>
+          </div>
+        </section>
+      }
+    }
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 flex justify-around p-2 z-10">
+    <button (click)="setActiveNav('Home')" class="flex flex-col items-center justify-center w-1/4 p-2 rounded-lg transition-colors duration-200" [class.bg-blue-600/20]="activeNav() === 'Home'" [class.text-blue-400]="activeNav() === 'Home'" [class.text-slate-400]="activeNav() !== 'Home'">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+      <span class="text-xs font-medium">Home</span>
+    </button>
+    <button (click)="setActiveNav('Support')" class="flex flex-col items-center justify-center w-1/4 p-2 rounded-lg transition-colors duration-200" [class.bg-blue-600/20]="activeNav() === 'Support'" [class.text-blue-400]="activeNav() === 'Support'" [class.text-slate-400]="activeNav() !== 'Support'">
+       <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span class="text-xs font-medium">Support</span>
+    </button>
+    <button (click)="setActiveNav('Tasks')" class="flex flex-col items-center justify-center w-1/4 p-2 rounded-lg transition-colors duration-200" [class.bg-blue-600/20]="activeNav() === 'Tasks'" [class.text-blue-400]="activeNav() === 'Tasks'" [class.text-slate-400]="activeNav() !== 'Tasks'">
+      <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+      <span class="text-xs font-medium">Tasks</span>
+    </button>
+    <button (click)="setActiveNav('Withdraw')" class="flex flex-col items-center justify-center w-1/4 p-2 rounded-lg transition-colors duration-200" [class.bg-blue-600/20]="activeNav() === 'Withdraw'" [class.text-blue-400]="activeNav() === 'Withdraw'" [class.text-slate-400]="activeNav() !== 'Withdraw'">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 8a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8zm-2-4a2 2 0 00-2-2H6a2 2 0 00-2 2v1h12V4z" clip-rule="evenodd"></path></svg>
+      <span class="text-xs font-medium">Withdraw</span>
+    </button>
+  </nav>
+</div>
